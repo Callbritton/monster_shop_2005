@@ -6,6 +6,9 @@
     <%= @merchant.state %>
     <%= @merchant.zip %>
   </section>
+  
+<p> <%= link_to "My Items", "/merchant/items" %> </p>
+<p> <%= link_to "Set My Discounts", "/merchant/bulk_discounts" %> </p>
 
 <h3>Pending Orders:</h3>
 <% @merchant.pending_orders.each do |order| %>
@@ -13,7 +16,7 @@
       <h4><%= link_to "Order ID: #{order.id}", "/merchant/orders/#{order.id}" %></h4>
       <li>Order Status: <%= order.created_at %></li>
       <li>Total Items: <%= order.total_item_count(@merchant.id) %></li>
-      <li>Total Value: $<%= order.total_item_value(@merchant.id) %></li>
+      <li>Total Value: $<%= number_with_precision(order.total_item_value(@merchant.id), precision: 2) %></li>
 <% end %>
 
-<p><%= link_to "My Items", "/merchant/items" %></p>
+

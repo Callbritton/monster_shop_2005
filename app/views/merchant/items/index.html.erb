@@ -8,7 +8,7 @@
   <%if item.image == "" %>
   <p><%= image_tag "coming_soon.jpeg" %></p>
   <% else %>
-  <p><%= image_tag item.image, width: 200 %></p>
+  <p><%= image_tag item.image %></p>
   <% end  %>
   <br>
    <% if item.active? %>
@@ -17,9 +17,10 @@
           <br><p><%= link_to "Delete Item", "/merchant/items/#{item.id}", method: :delete %> (This item has never been ordered)</p>
         <% end %>
       <% else %>
-        <%= link_to "Activate", "/merchant/items/#{item.id}", method: :patch %>
+        <p><%= link_to "Activate", "/merchant/items/#{item.id}", method: :patch %></p>
       <% end  %>
-    <%= link_to "Edit Item", "/merchant/items/#{item.id}/edit"%>
+    <p><%= link_to "Edit Item", "/merchant/items/#{item.id}/edit"%></p>
 </section>
 <% end %>
-<%= link_to "Create Item", "/merchant/items/new", method: :post %>
+<p><%= link_to "Create Item", "/merchant/items/new", method: :post %></p>
+

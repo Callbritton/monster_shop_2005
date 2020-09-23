@@ -22,7 +22,14 @@
   text-align: center;
  	font-size: 40px;
  	color: #002244;
- 	font-family: "Marker Felt", fantasy;
+ 	font-family: "haettenschweiler"
+ }
+ 
+ h2 {
+  text-align: left;
+   font-size: 40px;
+   color: #002244;
+   font-family: "haettenschweiler"
  }
 
 ul{

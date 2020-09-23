@@ -27,10 +27,11 @@ class CartController < ApplicationController
   def update
     if params[:modify] == "add"
       cart.add_quantity(params[:item_id]) unless cart.out_of_stock?(params[:item_id])
-    elsif params[:modify] == "subtract"
+    elsif params[:modify] == "subtract" && cart.item_count(params[:item_id]) >= 1
       cart.subtract_quantity(params[:item_id])
       return destroy if cart.item_count(params[:item_id]) == 0
     end
     redirect_to '/cart'
   end
+
 end

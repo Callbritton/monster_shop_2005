@@ -10,10 +10,18 @@ Rails.application.routes.draw do
   end
 
   namespace :merchant do
-    get '/', to: "dashboard#index"
     resources :items, only: [:index, :show, :create, :new]
-    post '/items/new', to: "/merchant/items#new"
     resources :orders, only: [:show, :update]
+
+    get "/bulk_discounts/new", to: "bulk_discounts#new"
+    get "/bulk_discounts/:discount_id/edit", to: "bulk_discounts#edit"
+    patch "/bulk_discounts/:discount_id/edit", to: "bulk_discounts#update"
+    delete "/bulk_discounts/:discount_id/delete", to: "bulk_discounts#destroy"
+    get "/bulk_discounts/", to: "bulk_discounts#index"
+    post "/bulk_discounts", to: "bulk_discounts#create"
+    
+    get '/', to: "dashboard#index"
+    post '/items/new', to: "/merchant/items#new"
     patch "/orders/:order_id/items/:item_id/update", to: "orders#update"
     patch "/items/:id", to: "items#update_activation"
     delete "/items/:id", to: "items#destroy"

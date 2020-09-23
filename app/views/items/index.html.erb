@@ -4,6 +4,12 @@
 <% else %>
   <h1>All Items</h1>
 <% end %>
+<p align="center">Current Discounts: </p>
+<% if !@discounts.nil? %>
+  <% @discounts.each do |discount|%>
+    <p align="center"><%= "#{discount.title} #{discount.percent_discount.to_i}% off a group of like items when you purchase #{discount.minimum_item_quantity} or more!" %> </p>
+  <% end %>
+<% end %>
 <section class="grid-container">
   <% @items.each do |item| %>
     <% if item.active? %>

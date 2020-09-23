@@ -10,10 +10,16 @@
   </tr>
   <% cart.items.each do |item, quantity| %>
     <tr id='order-item-<%= item.id%>'>
+      <% discount = BulkDiscount.get_best(item.merchant_id, item, cart.contents[item.id.to_s]) %>
       <td><h2><%= link_to item.name, "/items/#{item.id}" %></h2></td>
       <td><p><%= number_to_currency(item.price) %></p></td>
       <td><p><%= quantity %></p></td>
-      <td><p><%= number_to_currency(cart.subtotal(item)) %></p><td>
+      <% if discount == nil %>
+        <td><p><%= number_to_currency(cart.subtotal(item)) %></p></td>
+      <% else %>
+        <td><p> "<%= discount.title %>" Discount Applied! </p>
+        <p><%=number_to_currency(cart.subtotal(item, discount))%></p></td>
+      <% end %>
       <td><p><%= link_to item.merchant.name, "/merchants/#{item.merchant_id}" %></p></td>
       <td><p><%= item.inventory %> in stock</p></td>
     </tr>

@@ -32,14 +32,22 @@
         <center>
           <section id='item_quantity-<%= item.id%>'>
             <%= link_to "+", "/cart/add/#{item.id}", method: :patch %>
-            <%=quantity%>
+            <%= quantity %>
             <%= link_to "-", "/cart/subtract/#{item.id}", method: :patch %>
             <p><%= link_to "Remove", "/cart/#{item.id}",method: :delete %></p>
           </section>
         </center>
         </td>
       <td>
-        <p><%=number_to_currency(cart.subtotal(item))%></p>
+      <section id='item_subtotal-<%= item.id%>'>
+        <% discount = BulkDiscount.get_best(item.merchant_id, item, cart.contents[item.id.to_s]) %>
+        <% if discount == nil %>
+          <p><%=number_to_currency(cart.subtotal(item))%></p>
+        <% else %>
+          <p> "<%= discount.title %>" Discount Applied!</p>
+          <p><%=number_to_currency(cart.subtotal(item, discount))%></p>
+        <% end %>
+      </section>
     </td>
     </tr>
   <% end %>
