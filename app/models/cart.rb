@@ -22,24 +22,13 @@ class Cart
     item_quantity
   end
 
-  def subtotal(item, discount = nil)
-    if !discount.nil?
-      (item.price * @contents[item.id.to_s]) * (0.01 * (100 - discount.percent_discount))
-    else
-      item.price * @contents[item.id.to_s]
-    end
+  def subtotal(item)
+    item.price * @contents[item.id.to_s]
   end
 
   def total
     @contents.sum do |item_id,quantity|
-      item = Item.find(item_id)
-      discount = BulkDiscount.get_best(item.merchant_id, item, quantity)
-      if discount == nil
-        item.price * quantity
-      else
-        (item.price * quantity)* (0.01 * (100 - discount.percent_discount))
-      end
-        
+      Item.find(item_id).price * quantity
     end
   end
 
@@ -61,24 +50,13 @@ class Cart
 
   def modify(order)
     items.each do |item,quantity|
-      discount = BulkDiscount.get_best(item.merchant_id, item, quantity)
       item.modify_item_inventory(item, quantity, :decrease)
-      if discount == nil
-        order.item_orders.create({
-            item: item,
-            quantity: quantity,
-            price: item.price,
-            status: "unfulfilled"
-            })
-      else
-        discounted_price = item.price * (0.01 * (100 - discount.percent_discount))
-        order.item_orders.create({
-            item: item,
-            quantity: quantity,
-            price: discounted_price,
-            status: "unfulfilled"
-            })
-      end
+      order.item_orders.create({
+        item: item,
+        quantity: quantity,
+        price: item.price,
+        status: "unfulfilled"
+        })
     end
   end
 end
